@@ -1,5 +1,3 @@
-import { backend } from "declarations/backend";
-
 let todos = [];
 
 // Add event listener for adding new todo
@@ -15,7 +13,6 @@ window.deleteTodo = deleteTodo;
 
 // Get todos
 async function getTodos() {
-  todos = await backend.getTodos();
   renderTodos();
 }
 
@@ -29,15 +26,19 @@ async function addTodo() {
     return;
   }
 
-  await backend.addTodo(text);
   input.value = "";
+
+  todos.push({
+    id: todos.length + 1,
+    text: text,
+  });
 
   await getTodos();
 }
 
 // Delete todo
 async function deleteTodo(id) {
-  await backend.deleteTodo(id);
+  todos = todos.filter((todo) => todo.id !== id);
   await getTodos();
 }
 
